@@ -7,6 +7,7 @@ This file provides AI coding agents with technical context and development guide
 **FlowPilot** is an LLM-powered personal time management agent that helps users decide what to do next, intervenes when procrastination is detected, and provides daily reviews with actionable suggestions.
 
 **Frontend Stack**:
+
 - **Framework**: Svelte 5 (with Runes API)
 - **Language**: TypeScript 5.3+
 - **Build Tool**: Vite 5.x
@@ -15,6 +16,7 @@ This file provides AI coding agents with technical context and development guide
 - **Styling**: Tailwind CSS 3.4+
 
 **Key Characteristics**:
+
 - Standalone Vite app (NOT SvelteKit)
 - Spec-Driven Development (SDD) + Test-Driven Development (TDD)
 - No backward compatibility requirements
@@ -23,6 +25,7 @@ This file provides AI coding agents with technical context and development guide
 ## Commands
 
 ### Development
+
 ```bash
 pnpm dev              # Start dev server with HMR at localhost:5173
 pnpm build            # Production build to dist/
@@ -34,6 +37,7 @@ pnpm format:check     # Check formatting without changes
 ```
 
 ### Testing
+
 ```bash
 pnpm test             # Run unit tests with Vitest
 pnpm test:ui          # Open Vitest UI
@@ -42,6 +46,7 @@ pnpm test:e2e         # Run E2E tests (Playwright)
 ```
 
 ### Type Checking
+
 ```bash
 pnpm check            # svelte-check + tsc
 pnpm check:watch      # Watch mode for type checking
@@ -79,11 +84,13 @@ pnpm check:watch      # Watch mode for type checking
 **REQUIRED**: Read official documentation BEFORE using any library.
 
 **How to use docs**:
+
 - Use `context7` MCP tool to fetch documentation
 - Understand core concepts, not just copy examples
 - Verify compatibility with Svelte 5
 
 **Pre-approved libraries**:
+
 - **UI**: Bits UI, Melt UI (see `svelte-components` skill)
 - **Forms**: TBD
 - **HTTP**: TBD
@@ -94,6 +101,7 @@ pnpm check:watch      # Watch mode for type checking
 ### TypeScript
 
 **Strict Mode Enabled**:
+
 ```json
 {
   "strict": true,
@@ -105,6 +113,7 @@ pnpm check:watch      # Watch mode for type checking
 ```
 
 **Rules**:
+
 - Use explicit types for function parameters and return values
 - Prefer `interface` for object shapes
 - Use `type` for unions, intersections, primitives
@@ -113,6 +122,7 @@ pnpm check:watch      # Watch mode for type checking
 ### Svelte 5 Runes
 
 **Reactivity**:
+
 ```svelte
 <script lang="ts">
   // ✅ Correct
@@ -124,12 +134,13 @@ pnpm check:watch      # Watch mode for type checking
   })
 
   // ❌ Wrong (Svelte 4 syntax)
-  let count = 0  // Not reactive in Svelte 5!
-  $: doubled = count * 2  // Use $derived instead
+  let count = 0 // Not reactive in Svelte 5!
+  $: doubled = count * 2 // Use $derived instead
 </script>
 ```
 
 **Component Props**:
+
 ```svelte
 <script lang="ts">
   interface Props {
@@ -172,6 +183,7 @@ src/
 **Test file naming**: `*.test.ts` or `*.spec.ts`
 
 **Example**:
+
 ```typescript
 import { describe, it, expect } from 'vitest'
 import { formatDate } from './date'
@@ -196,7 +208,7 @@ import TaskCard from './TaskCard.svelte'
 
 it('triggers start event on button click', async () => {
   const { getByText, component } = render(TaskCard, {
-    props: { task: mockTask }
+    props: { task: mockTask },
   })
 
   const handler = vi.fn()
@@ -239,6 +251,7 @@ test/task-service-coverage
 ```
 
 **Types**:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `refactor`: Code refactoring
@@ -249,6 +262,7 @@ test/task-service-coverage
 - `chore`: Build/tooling changes
 
 **Examples**:
+
 ```bash
 feat(task): implement task list component
 
@@ -271,12 +285,14 @@ Fixes #456
 ### Commit Frequency
 
 **Per Feature Point**:
+
 - Complete ONE spec step/phase
 - Write tests
 - Commit immediately
 - Push to feature branch
 
 **Do NOT**:
+
 - Batch multiple features in one commit
 - Commit without tests
 - Push to main directly (use feature branches)
@@ -297,29 +313,36 @@ Fixes #456
 
 ```markdown
 ## 📝 Description
+
 Brief description of what this PR does.
 
 ## 🎯 Related Spec
+
 Which phase/step from the specification does this implement?
+
 - Reference: `/document/srs-user-story.md` Section X.Y
 
 ## ✅ Checklist
+
 - [ ] Spec-compliant implementation
 - [ ] Unit tests added
 - [ ] Type checking passes
 - [ ] No breaking changes (or documented if necessary)
 
 ## 🧪 Testing
+
 How to test this feature manually.
 ```
 
 ## Breaking Changes
 
 **Breaking changes are ALLOWED and ENCOURAGED**:
+
 - This is a greenfield project
 - Prioritize code quality over backward compatibility
 - Refactor freely without glue code
 - Document breaking changes in commit messages with `!` suffix:
+
   ```
   feat(api)!: change task status enum format
 
@@ -331,6 +354,7 @@ How to test this feature manually.
 ### Backend Communication
 
 **Base URL**: Configure via environment variable
+
 ```typescript
 // .env
 PUBLIC_API_BASE_URL=http://localhost:8080/api/v1
@@ -339,6 +363,7 @@ PUBLIC_API_BASE_URL=http://localhost:8080/api/v1
 **HTTP Client**: TBD (awaiting library selection)
 
 **Error Handling**:
+
 - Handle 401 (redirect to login)
 - Handle 403 (show permission error)
 - Handle 500 (show generic error)
@@ -361,11 +386,13 @@ PUBLIC_API_BASE_URL=http://localhost:8080/api/v1
 ## Documentation References
 
 **Project Specs**: `/document/`
+
 - `srs-user-story.md` - Requirements and user stories
 - `system-design.md` - Architecture and design
 - `tech-stack-standards.md` - Technology standards
 
 **Skills**: `.claude/skills/`
+
 - `svelte-components` - Component patterns and libraries
 - `svelte-runes` - Reactivity and state management
 

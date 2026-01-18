@@ -1,0 +1,8 @@
+dist
+build
+.svelte-kit
+node_modules
+coverage
+*.log
+.DS_Store
+.claude

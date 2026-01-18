@@ -6,7 +6,7 @@
 
 ```svelte
 <script>
-	let { name, age } = $props();
+  let { name, age } = $props()
 </script>
 
 <p>{name} is {age} years old</p>
@@ -18,7 +18,7 @@
 
 ```svelte
 <script>
-	let { name = 'Anonymous', age = 18 } = $props();
+  let { name = 'Anonymous', age = 18 } = $props()
 </script>
 ```
 
@@ -26,12 +26,12 @@
 
 ```svelte
 <script lang="ts">
-	interface Props {
-		name: string;
-		age?: number; // Optional with default
-	}
+  interface Props {
+    name: string
+    age?: number // Optional with default
+  }
 
-	let { name, age = 18 }: Props = $props();
+  let { name, age = 18 }: Props = $props()
 </script>
 ```
 
@@ -41,11 +41,11 @@ Capture all additional props:
 
 ```svelte
 <script>
-	let { name, age, ...rest } = $props();
+  let { name, age, ...rest } = $props()
 </script>
 
 <div {...rest}>
-	<p>{name} is {age}</p>
+  <p>{name} is {age}</p>
 </div>
 
 <!-- Usage: <Person name="Alex" age={30} class="card" id="p1" /> -->
@@ -56,7 +56,7 @@ Capture all additional props:
 
 ```svelte
 <script>
-	let props = $props();
+  let props = $props()
 </script>
 
 <p>{props.name} is {props.age}</p>
@@ -107,8 +107,8 @@ Capture all additional props:
 
 ```svelte
 <script>
-	let { value = $bindable('') } = $props();
-	//                       ^^^^^ default if parent doesn't provide
+  let { value = $bindable('') } = $props()
+  //                       ^^^^^ default if parent doesn't provide
 </script>
 ```
 
@@ -116,11 +116,11 @@ Capture all additional props:
 
 ```svelte
 <script lang="ts">
-	interface Props {
-		value?: string; // Optional
-	}
+  interface Props {
+    value?: string // Optional
+  }
 
-	let { value = $bindable('default') }: Props = $props();
+  let { value = $bindable('default') }: Props = $props()
 </script>
 ```
 
@@ -258,36 +258,36 @@ Parent needs to read child state?
 
 ```svelte
 <script lang="ts">
-	interface Props {
-		// Required props
-		name: string;
-		age: number;
+  interface Props {
+    // Required props
+    name: string
+    age: number
 
-		// Optional props
-		email?: string;
+    // Optional props
+    email?: string
 
-		// Props with defaults (must be optional in interface)
-		role?: string;
+    // Props with defaults (must be optional in interface)
+    role?: string
 
-		// Bindable props
-		checked?: boolean;
+    // Bindable props
+    checked?: boolean
 
-		// Callbacks
-		onSave?: (data: FormData) => void;
+    // Callbacks
+    onSave?: (data: FormData) => void
 
-		// Rest props (for spreading to elements)
-		[key: string]: unknown;
-	}
+    // Rest props (for spreading to elements)
+    [key: string]: unknown
+  }
 
-	let {
-		name,
-		age,
-		email,
-		role = 'user',
-		checked = $bindable(false),
-		onSave,
-		...rest
-	}: Props = $props();
+  let {
+    name,
+    age,
+    email,
+    role = 'user',
+    checked = $bindable(false),
+    onSave,
+    ...rest
+  }: Props = $props()
 </script>
 ```
 
@@ -295,19 +295,19 @@ Parent needs to read child state?
 
 ```svelte
 <script lang="ts" generics="T">
-	interface Props<T> {
-		items: T[];
-		selected?: T;
-		onSelect?: (item: T) => void;
-	}
+  interface Props<T> {
+    items: T[]
+    selected?: T
+    onSelect?: (item: T) => void
+  }
 
-	let { items, selected, onSelect }: Props<T> = $props();
+  let { items, selected, onSelect }: Props<T> = $props()
 </script>
 
 {#each items as item}
-	<button onclick={() => onSelect?.(item)}>
-		{item}
-	</button>
+  <button onclick={() => onSelect?.(item)}>
+    {item}
+  </button>
 {/each}
 ```
 

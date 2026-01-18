@@ -8,12 +8,12 @@
 
 ```svelte
 <script>
-	let count = $state(0);
-	let doubled = $state(0);
+  let count = $state(0)
+  let doubled = $state(0)
 
-	$effect(() => {
-		doubled = count * 2; // BAD - use $derived!
-	});
+  $effect(() => {
+    doubled = count * 2 // BAD - use $derived!
+  })
 </script>
 ```
 
@@ -21,8 +21,8 @@
 
 ```svelte
 <script>
-	let count = $state(0);
-	let doubled = $derived(count * 2); // GOOD - computed value
+  let count = $state(0)
+  let doubled = $derived(count * 2) // GOOD - computed value
 </script>
 ```
 
@@ -40,12 +40,12 @@ recalculate when dependencies change.
 
 ```svelte
 <script>
-	let count = $state(0);
-	let doubled = $derived(count * 2);
+  let count = $state(0)
+  let doubled = $derived(count * 2)
 
-	function reset() {
-		doubled = 0; // Temporarily overrides, but recalculates when count changes
-	}
+  function reset() {
+    doubled = 0 // Temporarily overrides, but recalculates when count changes
+  }
 </script>
 ```
 
@@ -53,12 +53,12 @@ recalculate when dependencies change.
 
 ```svelte
 <script>
-	let count = $state(0);
-	const doubled = $derived(count * 2); // const = truly read-only
+  let count = $state(0)
+  const doubled = $derived(count * 2) // const = truly read-only
 
-	function reset() {
-		count = 0; // Update source, derived updates automatically
-	}
+  function reset() {
+    count = 0 // Update source, derived updates automatically
+  }
 </script>
 ```
 
@@ -73,14 +73,14 @@ source state. Use `const` to enforce read-only behavior.
 
 ```svelte
 <script>
-	let particles = $state(undefined);
-	let scheme = $state('dark');
+  let particles = $state(undefined)
+  let scheme = $state('dark')
 
-	$effect(() => {
-		// If particles is undefined, scheme is NEVER read!
-		// Effect won't re-run when scheme changes
-		particles?.updateScheme(scheme);
-	});
+  $effect(() => {
+    // If particles is undefined, scheme is NEVER read!
+    // Effect won't re-run when scheme changes
+    particles?.updateScheme(scheme)
+  })
 </script>
 ```
 
@@ -88,16 +88,16 @@ source state. Use `const` to enforce read-only behavior.
 
 ```svelte
 <script>
-	let particles = $state(undefined);
-	let scheme = $state('dark');
+  let particles = $state(undefined)
+  let scheme = $state('dark')
 
-	$effect(() => {
-		// Read scheme first to create dependency
-		const currentScheme = scheme;
-		if (particles) {
-			particles.updateScheme(currentScheme);
-		}
-	});
+  $effect(() => {
+    // Read scheme first to create dependency
+    const currentScheme = scheme
+    if (particles) {
+      particles.updateScheme(currentScheme)
+    }
+  })
 </script>
 ```
 
@@ -112,11 +112,11 @@ is nullish, `scheme` is never evaluated, so no dependency is created.
 
 ```svelte
 <script>
-	let count = $state(0);
+  let count = $state(0)
 
-	$effect(() => {
-		count++; // INFINITE LOOP - effect triggers itself!
-	});
+  $effect(() => {
+    count++ // INFINITE LOOP - effect triggers itself!
+  })
 </script>
 ```
 
@@ -124,12 +124,12 @@ is nullish, `scheme` is never evaluated, so no dependency is created.
 
 ```svelte
 <script>
-	let count = $state(0);
-	let log = $state([]);
+  let count = $state(0)
+  let log = $state([])
 
-	$effect(() => {
-		log.push(count); // Updates different state
-	});
+  $effect(() => {
+    log.push(count) // Updates different state
+  })
 </script>
 ```
 
@@ -137,16 +137,16 @@ is nullish, `scheme` is never evaluated, so no dependency is created.
 
 ```svelte
 <script>
-	import { untrack } from 'svelte';
+  import { untrack } from 'svelte'
 
-	let count = $state(0);
+  let count = $state(0)
 
-	$effect(() => {
-		console.log('Effect ran');
-		// Read count without creating dependency
-		const current = untrack(() => count);
-		// Now updating count won't re-trigger this effect
-	});
+  $effect(() => {
+    console.log('Effect ran')
+    // Read count without creating dependency
+    const current = untrack(() => count)
+    // Now updating count won't re-trigger this effect
+  })
 </script>
 ```
 
@@ -162,12 +162,12 @@ creating a dependency.
 
 ```svelte
 <script>
-	function createCounter() {
-		let count = $state(0); // ERROR - runes must be top-level!
-		return count;
-	}
+  function createCounter() {
+    let count = $state(0) // ERROR - runes must be top-level!
+    return count
+  }
 
-	const counter = createCounter();
+  const counter = createCounter()
 </script>
 ```
 
@@ -175,7 +175,7 @@ creating a dependency.
 
 ```svelte
 <script>
-	let count = $state(0);
+  let count = $state(0)
 </script>
 ```
 
@@ -183,11 +183,11 @@ creating a dependency.
 
 ```svelte
 <script>
-	class Counter {
-		count = $state(0); // OK in class fields
-	}
+  class Counter {
+    count = $state(0) // OK in class fields
+  }
 
-	const counter = new Counter();
+  const counter = new Counter()
 </script>
 ```
 
@@ -202,11 +202,11 @@ classes for encapsulation.
 
 ```svelte
 <script>
-	let user = $state({ profile: { name: 'Alex' } });
+  let user = $state({ profile: { name: 'Alex' } })
 
-	function updateName() {
-		user.profile.name = 'Bo'; // This DOES trigger reactivity!
-	}
+  function updateName() {
+    user.profile.name = 'Bo' // This DOES trigger reactivity!
+  }
 </script>
 
 <p>{user.profile.name}</p> <!-- Will update correctly -->
@@ -219,11 +219,11 @@ mutations trigger updates.
 
 ```svelte
 <script>
-	// For large, immutable data structures where you don't need reactivity
-	let config = $state.raw(hugeConfigObject); // Skip deep proxy overhead for performance
+  // For large, immutable data structures where you don't need reactivity
+  let config = $state.raw(hugeConfigObject) // Skip deep proxy overhead for performance
 
-	// For data you'll fully replace, not mutate
-	let apiResponse = $state.raw(data); // Will replace entire object later
+  // For data you'll fully replace, not mutate
+  let apiResponse = $state.raw(data) // Will replace entire object later
 </script>
 ```
 
@@ -238,13 +238,13 @@ don't need deep reactivity, not because deep reactivity doesn't work.
 
 ```svelte
 <script>
-	let count = $state(0);
-	$: doubled = count * 2; // DON'T MIX reactive statements with runes!
+  let count = $state(0)
+  $: doubled = count * 2 // DON'T MIX reactive statements with runes!
 </script>
 
 <button on:click={() => count++}>
-	<!-- DON'T MIX on: with runes -->
-	{count}
+  <!-- DON'T MIX on: with runes -->
+  {count}
 </button>
 ```
 
@@ -252,13 +252,13 @@ don't need deep reactivity, not because deep reactivity doesn't work.
 
 ```svelte
 <script>
-	let count = $state(0);
-	let doubled = $derived(count * 2); // Use runes consistently
+  let count = $state(0)
+  let doubled = $derived(count * 2) // Use runes consistently
 </script>
 
 <button onclick={() => count++}>
-	<!-- Use onclick -->
-	{count}
+  <!-- Use onclick -->
+  {count}
 </button>
 ```
 
@@ -272,7 +272,7 @@ don't need deep reactivity, not because deep reactivity doesn't work.
 
 ```svelte
 <script>
-	let count = 0; // Not reactive in Svelte 5!
+  let count = 0 // Not reactive in Svelte 5!
 </script>
 
 <button onclick={() => count++}>{count}</button>
@@ -283,7 +283,7 @@ don't need deep reactivity, not because deep reactivity doesn't work.
 
 ```svelte
 <script>
-	let count = $state(0); // Reactive
+  let count = $state(0) // Reactive
 </script>
 
 <button onclick={() => count++}>{count}</button>
@@ -300,7 +300,7 @@ don't need deep reactivity, not because deep reactivity doesn't work.
 ```svelte
 <!-- Child.svelte -->
 <script>
-	let { value } = $props(); // Not bindable!
+  let { value } = $props() // Not bindable!
 </script>
 
 <input bind:value />
@@ -315,7 +315,7 @@ don't need deep reactivity, not because deep reactivity doesn't work.
 ```svelte
 <!-- Child.svelte -->
 <script>
-	let { value = $bindable() } = $props(); // Make it bindable
+  let { value = $bindable() } = $props() // Make it bindable
 </script>
 
 <input bind:value />
@@ -336,7 +336,7 @@ $bindable().
 
 ```svelte
 <script>
-	let { children } = $props();
+  let { children } = $props()
 </script>
 
 <div>{children}</div> <!-- Won't render! Shows [object Object] -->
@@ -346,7 +346,7 @@ $bindable().
 
 ```svelte
 <script>
-	let { children } = $props();
+  let { children } = $props()
 </script>
 
 <div>{@render children()}</div> <!-- Renders children -->
@@ -372,10 +372,10 @@ $bindable().
 <button onclick={handler}>Click</button>
 <!-- Svelte 5 syntax -->
 <button
-	onclick={(e) => {
-		e.preventDefault();
-		handler(e);
-	}}>Click</button
+  onclick={e => {
+    e.preventDefault()
+    handler(e)
+  }}>Click</button
 >
 ```
 
@@ -393,15 +393,15 @@ updates:
 
 ```svelte
 <script>
-	let items = $state([1, 2, 3]);
+  let items = $state([1, 2, 3])
 
-	function addItem() {
-		items.push(4); // ✅ Works! Triggers reactivity
-		// OR
-		items[items.length] = 5; // ✅ Also works!
-		// OR
-		items = [...items, 6]; // ✅ Also works!
-	}
+  function addItem() {
+    items.push(4) // ✅ Works! Triggers reactivity
+    // OR
+    items[items.length] = 5 // ✅ Also works!
+    // OR
+    items = [...items, 6] // ✅ Also works!
+  }
 </script>
 ```
 
@@ -409,15 +409,15 @@ updates:
 
 ```svelte
 <script>
-	let data = $state({ items: [1, 2, 3], nested: { arr: [10, 20] } });
+  let data = $state({ items: [1, 2, 3], nested: { arr: [10, 20] } })
 
-	function addItem() {
-		data.items.push(4); // ✅ Works! Deep reactivity
-	}
+  function addItem() {
+    data.items.push(4) // ✅ Works! Deep reactivity
+  }
 
-	function addNested() {
-		data.nested.arr.push(30); // ✅ Works! Deeply reactive
-	}
+  function addNested() {
+    data.nested.arr.push(30) // ✅ Works! Deeply reactive
+  }
 </script>
 ```
 
@@ -432,7 +432,7 @@ proxies.
 
 ```svelte
 <script>
-	const API_URL = $state('https://api.example.com'); // Doesn't change!
+  const API_URL = $state('https://api.example.com') // Doesn't change!
 </script>
 ```
 
@@ -440,7 +440,7 @@ proxies.
 
 ```svelte
 <script>
-	const API_URL = 'https://api.example.com'; // Plain const
+  const API_URL = 'https://api.example.com' // Plain const
 </script>
 ```
 
@@ -450,11 +450,11 @@ proxies.
 
 ```svelte
 <script>
-	// Deep proxy has overhead for large objects
-	let bigConfig = $state(hugeImmutableObject); // Slower
+  // Deep proxy has overhead for large objects
+  let bigConfig = $state(hugeImmutableObject) // Slower
 
-	// Skip proxies for data you don't mutate
-	let bigConfig = $state.raw(hugeImmutableObject); // Faster
+  // Skip proxies for data you don't mutate
+  let bigConfig = $state.raw(hugeImmutableObject) // Faster
 </script>
 ```
 
@@ -475,8 +475,8 @@ proxies.
 
 ```svelte
 <script>
-	let { count } = $props();
-	let doubled = $derived(count * 2); // Used only once
+  let { count } = $props()
+  let doubled = $derived(count * 2) // Used only once
 </script>
 
 <p>{doubled}</p>
@@ -486,7 +486,7 @@ proxies.
 
 ```svelte
 <script>
-	let { count } = $props();
+  let { count } = $props()
 </script>
 
 <p>{count * 2}</p> <!-- Inline is fine -->
@@ -500,7 +500,7 @@ proxies.
 
 ```svelte
 <script lang="ts">
-	let { name, age } = $props(); // No types!
+  let { name, age } = $props() // No types!
 </script>
 ```
 
@@ -508,12 +508,12 @@ proxies.
 
 ```svelte
 <script lang="ts">
-	interface Props {
-		name: string;
-		age: number;
-	}
+  interface Props {
+    name: string
+    age: number
+  }
 
-	let { name, age }: Props = $props();
+  let { name, age }: Props = $props()
 </script>
 ```
 
@@ -523,8 +523,8 @@ proxies.
 
 ```svelte
 <script lang="ts">
-	let { value = $bindable() }: { value: string } = $props();
-	//                                   ^^^^^^ Should be optional
+  let { value = $bindable() }: { value: string } = $props()
+  //                                   ^^^^^^ Should be optional
 </script>
 ```
 
@@ -532,8 +532,8 @@ proxies.
 
 ```svelte
 <script lang="ts">
-	let { value = $bindable('') }: { value?: string } = $props();
-	//                                       ^ Optional
+  let { value = $bindable('') }: { value?: string } = $props()
+  //                                       ^ Optional
 </script>
 ```
 
@@ -564,12 +564,12 @@ proxies.
 ```svelte
 <!-- WRONG -->
 <script context="module">
-	let count = $state(0); // ERROR - not in component scope
+  let count = $state(0) // ERROR - not in component scope
 </script>
 
 <!-- RIGHT -->
 <script>
-	let count = $state(0); // OK
+  let count = $state(0) // OK
 </script>
 ```
 

@@ -21,9 +21,9 @@
 
 ```svelte
 <script>
-	let count = $state(0); // Primitive
-	let user = $state({ name: 'Alex', profile: { age: 30 } }); // Object (DEEP reactive)
-	let items = $state([1, 2, 3]); // Array (DEEP reactive)
+  let count = $state(0) // Primitive
+  let user = $state({ name: 'Alex', profile: { age: 30 } }) // Object (DEEP reactive)
+  let items = $state([1, 2, 3]) // Array (DEEP reactive)
 </script>
 ```
 
@@ -42,13 +42,13 @@
 
 ```svelte
 <script>
-	let count = $state(0);
-	let doubled = $derived(count * 2); // Simple computation
-	let message = $derived.by(() => {
-		// Complex computation
-		if (count === 0) return 'Zero';
-		return count > 10 ? 'High' : 'Low';
-	});
+  let count = $state(0)
+  let doubled = $derived(count * 2) // Simple computation
+  let message = $derived.by(() => {
+    // Complex computation
+    if (count === 0) return 'Zero'
+    return count > 10 ? 'High' : 'Low'
+  })
 </script>
 ```
 
@@ -68,12 +68,12 @@
 
 ```svelte
 <script>
-	let count = $state(0);
+  let count = $state(0)
 
-	$effect(() => {
-		console.log(`Count changed to ${count}`);
-		document.title = `Count: ${count}`;
-	});
+  $effect(() => {
+    console.log(`Count changed to ${count}`)
+    document.title = `Count: ${count}`
+  })
 </script>
 ```
 
@@ -97,12 +97,12 @@
 
 ```svelte
 <script>
-	let element = $state(null);
+  let element = $state(null)
 
-	$effect.pre(() => {
-		// Runs BEFORE DOM updates
-		// Useful for measuring DOM before changes
-	});
+  $effect.pre(() => {
+    // Runs BEFORE DOM updates
+    // Useful for measuring DOM before changes
+  })
 </script>
 ```
 
@@ -112,9 +112,9 @@
 
 ```svelte
 <script>
-	let { name, age = 18, ...rest } = $props(); // Destructure with defaults
-	// OR
-	let props = $props(); // Access as props.name, props.age
+  let { name, age = 18, ...rest } = $props() // Destructure with defaults
+  // OR
+  let props = $props() // Access as props.name, props.age
 </script>
 
 <p>{name} is {age} years old</p>
@@ -208,11 +208,11 @@ truly read-only.
 ```svelte
 <!-- WRONG -->
 <script>
-	let count = $state(0);
+  let count = $state(0)
 
-	$effect(() => {
-		count++; // INFINITE LOOP - effect updates count, triggers effect...
-	});
+  $effect(() => {
+    count++ // INFINITE LOOP - effect updates count, triggers effect...
+  })
 </script>
 ```
 
@@ -221,10 +221,10 @@ truly read-only.
 ```svelte
 <!-- WRONG -->
 <script>
-	function createCounter() {
-		let count = $state(0); // ERROR - runes must be top-level
-		return count;
-	}
+  function createCounter() {
+    let count = $state(0) // ERROR - runes must be top-level
+    return count
+  }
 </script>
 ```
 
@@ -235,16 +235,16 @@ need reactivity:
 
 ```svelte
 <script>
-	// Large immutable config (never changes)
-	let config = $state.raw(hugeConfigObject); // No proxy overhead
+  // Large immutable config (never changes)
+  let config = $state.raw(hugeConfigObject) // No proxy overhead
 
-	// Data you'll replace entirely, not mutate
-	let apiData = $state.raw(data);
-	// Later: apiData = newData; (full replacement)
+  // Data you'll replace entirely, not mutate
+  let apiData = $state.raw(data)
+  // Later: apiData = newData; (full replacement)
 
-	// If you WILL mutate nested properties, use $state:
-	let user = $state({ profile: { name: 'Alex' } });
-	user.profile.name = 'Bo'; // Works with deep reactivity
+  // If you WILL mutate nested properties, use $state:
+  let user = $state({ profile: { name: 'Alex' } })
+  user.profile.name = 'Bo' // Works with deep reactivity
 </script>
 ```
 
@@ -265,13 +265,13 @@ Extract plain JavaScript values from proxies:
 
 ```svelte
 <script>
-	let user = $state({ name: 'Alex', age: 30 });
+  let user = $state({ name: 'Alex', age: 30 })
 
-	function saveToAPI() {
-		const plain = $state.snapshot(user); // Get plain object
-		fetch('/api/users', {
-			body: JSON.stringify(plain),
-		});
-	}
+  function saveToAPI() {
+    const plain = $state.snapshot(user) // Get plain object
+    fetch('/api/users', {
+      body: JSON.stringify(plain),
+    })
+  }
 </script>
 ```

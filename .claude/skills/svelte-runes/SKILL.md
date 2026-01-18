@@ -20,16 +20,16 @@ Objects/arrays are deeply reactive by default.
 
 ```svelte
 <script>
-	let count = $state(0); // Mutable state
-	const doubled = $derived(count * 2); // Computed (const = read-only)
+  let count = $state(0) // Mutable state
+  const doubled = $derived(count * 2) // Computed (const = read-only)
 
-	$effect(() => {
-		console.log(`Count is ${count}`); // Side effect
-	});
+  $effect(() => {
+    console.log(`Count is ${count}`) // Side effect
+  })
 </script>
 
 <button onclick={() => count++}>
-	{count} (doubled: {doubled})
+  {count} (doubled: {doubled})
 </button>
 ```
 

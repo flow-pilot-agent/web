@@ -11,10 +11,10 @@ flexible and composable.
 
 ```svelte
 <script>
-	const myAttachment = (element) => {
-		console.log(element.nodeName);
-		return () => console.log('cleanup');
-	};
+  const myAttachment = element => {
+    console.log(element.nodeName)
+    return () => console.log('cleanup')
+  }
 </script>
 
 <div {@attach myAttachment}>...</div>
@@ -33,14 +33,14 @@ flexible and composable.
 
 ```svelte
 <script>
-	function tooltip(content) {
-		return (element) => {
-			const instance = tippy(element, { content });
-			return instance.destroy;
-		};
-	}
+  function tooltip(content) {
+    return element => {
+      const instance = tippy(element, { content })
+      return instance.destroy
+    }
+  }
 
-	let content = $state('Hello');
+  let content = $state('Hello')
 </script>
 
 <!-- Re-runs when content changes -->
@@ -51,14 +51,14 @@ flexible and composable.
 
 ```svelte
 <canvas
-	{@attach (canvas) => {
-		const ctx = canvas.getContext('2d');
+  {@attach canvas => {
+    const ctx = canvas.getContext('2d')
 
-		$effect(() => {
-			ctx.fillStyle = color;
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
-		});
-	}}
+    $effect(() => {
+      ctx.fillStyle = color
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    })
+  }}
 />
 ```
 
@@ -69,11 +69,11 @@ Attachments pass through automatically when spreading props:
 ```svelte
 <!-- Button.svelte -->
 <script>
-	let { children, ...props } = $props();
+  let { children, ...props } = $props()
 </script>
 
 <button {...props}>
-	{@render children?.()}
+  {@render children?.()}
 </button>
 
 <!-- Usage -->
@@ -86,17 +86,17 @@ Pass data via accessor functions to prevent setup re-execution:
 
 ```svelte
 <script>
-	function expensiveAttachment(getData) {
-		return (node) => {
-			veryExpensiveSetup(node); // Runs once
+  function expensiveAttachment(getData) {
+    return node => {
+      veryExpensiveSetup(node) // Runs once
 
-			$effect(() => {
-				update(node, getData()); // Re-runs on data change
-			});
-		};
-	}
+      $effect(() => {
+        update(node, getData()) // Re-runs on data change
+      })
+    }
+  }
 
-	let data = $state({ value: 1 });
+  let data = $state({ value: 1 })
 </script>
 
 <div {@attach expensiveAttachment(() => data.value)}>...</div>
@@ -108,10 +108,10 @@ Use `fromAction` for existing action libraries:
 
 ```svelte
 <script>
-	import { fromAction } from 'svelte/attachments';
-	import { someAction } from 'some-library';
+  import { fromAction } from 'svelte/attachments'
+  import { someAction } from 'some-library'
 
-	const attached = fromAction(someAction);
+  const attached = fromAction(someAction)
 </script>
 
 <div {@attach attached(options)}>...</div>
