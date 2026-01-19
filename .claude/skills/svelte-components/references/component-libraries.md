@@ -10,7 +10,7 @@ pnpm add bits-ui
 
 ```svelte
 <script>
-	import { Button } from 'bits-ui';
+  import { Button } from 'bits-ui'
 </script>
 
 <Button.Root class="my-button">Click me</Button.Root>
@@ -36,19 +36,19 @@ pnpm add @ark-ui/svelte
 
 ```svelte
 <script>
-	import { Dialog } from '@ark-ui/svelte';
+  import { Dialog } from '@ark-ui/svelte'
 </script>
 
 <Dialog.Root>
-	<Dialog.Trigger>Open</Dialog.Trigger>
-	<Dialog.Backdrop />
-	<Dialog.Positioner>
-		<Dialog.Content>
-			<Dialog.Title>Title</Dialog.Title>
-			<Dialog.Description>Description</Dialog.Description>
-			<Dialog.CloseTrigger>Close</Dialog.CloseTrigger>
-		</Dialog.Content>
-	</Dialog.Positioner>
+  <Dialog.Trigger>Open</Dialog.Trigger>
+  <Dialog.Backdrop />
+  <Dialog.Positioner>
+    <Dialog.Content>
+      <Dialog.Title>Title</Dialog.Title>
+      <Dialog.Description>Description</Dialog.Description>
+      <Dialog.CloseTrigger>Close</Dialog.CloseTrigger>
+    </Dialog.Content>
+  </Dialog.Positioner>
 </Dialog.Root>
 ```
 
@@ -66,24 +66,24 @@ pnpm add @melt-ui/svelte
 
 ```svelte
 <script>
-	import { createDialog } from '@melt-ui/svelte';
+  import { createDialog } from '@melt-ui/svelte'
 
-	const {
-		elements: { trigger, portalled, overlay, content, title, close },
-		states: { open },
-	} = createDialog();
+  const {
+    elements: { trigger, portalled, overlay, content, title, close },
+    states: { open },
+  } = createDialog()
 </script>
 
 <button use:melt={$trigger}>Open</button>
 
 {#if $open}
-	<div use:melt={$portalled}>
-		<div use:melt={$overlay} />
-		<div use:melt={$content}>
-			<h2 use:melt={$title}>Title</h2>
-			<button use:melt={$close}>Close</button>
-		</div>
-	</div>
+  <div use:melt={$portalled}>
+    <div use:melt={$overlay} />
+    <div use:melt={$content}>
+      <h2 use:melt={$title}>Title</h2>
+      <button use:melt={$close}>Close</button>
+    </div>
+  </div>
 {/if}
 ```
 

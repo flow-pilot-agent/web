@@ -17,12 +17,12 @@
 ```svelte
 <!-- Card.svelte -->
 <div class="card">
-	<slot />
+  <slot />
 </div>
 
 <!-- Usage -->
 <Card>
-	<p>This is card content</p>
+  <p>This is card content</p>
 </Card>
 ```
 
@@ -31,16 +31,16 @@
 ```svelte
 <!-- Card.svelte -->
 <script>
-	let { children } = $props();
+  let { children } = $props()
 </script>
 
 <div class="card">
-	{@render children()}
+  {@render children()}
 </div>
 
 <!-- Usage -->
 <Card>
-	<p>This is card content</p>
+  <p>This is card content</p>
 </Card>
 ```
 
@@ -57,16 +57,16 @@
 ```svelte
 <!-- Layout.svelte -->
 <div class="layout">
-	<header><slot name="header" /></header>
-	<main><slot /></main>
-	<footer><slot name="footer" /></footer>
+  <header><slot name="header" /></header>
+  <main><slot /></main>
+  <footer><slot name="footer" /></footer>
 </div>
 
 <!-- Usage -->
 <Layout>
-	<div slot="header">Header content</div>
-	<div slot="footer">Footer content</div>
-	Main content
+  <div slot="header">Header content</div>
+  <div slot="footer">Footer content</div>
+  Main content
 </Layout>
 ```
 
@@ -75,26 +75,26 @@
 ```svelte
 <!-- Layout.svelte -->
 <script>
-	let { header, footer, children } = $props();
+  let { header, footer, children } = $props()
 </script>
 
 <div class="layout">
-	<header>{@render header()}</header>
-	<main>{@render children()}</main>
-	<footer>{@render footer()}</footer>
+  <header>{@render header()}</header>
+  <main>{@render children()}</main>
+  <footer>{@render footer()}</footer>
 </div>
 
 <!-- Usage -->
 <Layout>
-	{#snippet header()}
-		Header content
-	{/snippet}
+  {#snippet header()}
+    Header content
+  {/snippet}
 
-	{#snippet footer()}
-		Footer content
-	{/snippet}
+  {#snippet footer()}
+    Footer content
+  {/snippet}
 
-	Main content
+  Main content
 </Layout>
 ```
 
@@ -111,20 +111,20 @@
 ```svelte
 <!-- List.svelte -->
 <script>
-	export let items;
+  export let items
 </script>
 
 <ul>
-	{#each items as item}
-		<li>
-			<slot {item} index={i} />
-		</li>
-	{/each}
+  {#each items as item}
+    <li>
+      <slot {item} index={i} />
+    </li>
+  {/each}
 </ul>
 
 <!-- Usage -->
 <List items={users} let:item let:index>
-	{index}: {item.name}
+  {index}: {item.name}
 </List>
 ```
 
@@ -133,22 +133,22 @@
 ```svelte
 <!-- List.svelte -->
 <script>
-	let { items, children } = $props();
+  let { items, children } = $props()
 </script>
 
 <ul>
-	{#each items as item, i}
-		<li>
-			{@render children(item, i)}
-		</li>
-	{/each}
+  {#each items as item, i}
+    <li>
+      {@render children(item, i)}
+    </li>
+  {/each}
 </ul>
 
 <!-- Usage -->
 <List items={users}>
-	{#snippet children(item, index)}
-		{index}: {item.name}
-	{/snippet}
+  {#snippet children(item, index)}
+    {index}: {item.name}
+  {/snippet}
 </List>
 ```
 
@@ -165,30 +165,30 @@
 ```svelte
 <!-- Card.svelte -->
 <script>
-	let { header, children } = $props();
+  let { header, children } = $props()
 </script>
 
 <div class="card">
-	{#if header}
-		<h2>{@render header()}</h2>
-	{:else}
-		<h2>Default Title</h2>
-	{/if}
+  {#if header}
+    <h2>{@render header()}</h2>
+  {:else}
+    <h2>Default Title</h2>
+  {/if}
 
-	{@render children()}
+  {@render children()}
 </div>
 
 <!-- Usage without header -->
 <Card>
-	<p>Content only</p>
+  <p>Content only</p>
 </Card>
 
 <!-- Usage with header -->
 <Card>
-	{#snippet header()}
-		Custom Title
-	{/snippet}
-	<p>Content</p>
+  {#snippet header()}
+    Custom Title
+  {/snippet}
+  <p>Content</p>
 </Card>
 ```
 
@@ -211,23 +211,23 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 <script>
-	let items = $state(['Apple', 'Banana', 'Cherry']);
+  let items = $state(['Apple', 'Banana', 'Cherry'])
 </script>
 
 {#snippet listItem(text)}
-	<li class="item">{text}</li>
+  <li class="item">{text}</li>
 {/snippet}
 
 <ul>
-	{#each items as item}
-		{@render listItem(item)}
-	{/each}
+  {#each items as item}
+    {@render listItem(item)}
+  {/each}
 </ul>
 
 <ul>
-	{#each items.slice(0, 2) as item}
-		{@render listItem(item)}
-	{/each}
+  {#each items.slice(0, 2) as item}
+    {@render listItem(item)}
+  {/each}
 </ul>
 ```
 
@@ -271,25 +271,25 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+  import type { Snippet } from 'svelte'
 
-	interface Props {
-		children: Snippet;
-		header?: Snippet;
-		item?: Snippet<[{ name: string; age: number }]>; // Snippet with params
-	}
+  interface Props {
+    children: Snippet
+    header?: Snippet
+    item?: Snippet<[{ name: string; age: number }]> // Snippet with params
+  }
 
-	let { children, header, item }: Props = $props();
+  let { children, header, item }: Props = $props()
 </script>
 
 {#if header}
-	{@render header()}
+  {@render header()}
 {/if}
 
 {@render children()}
 
 {#if item}
-	{@render item({ name: 'Alex', age: 30 })}
+  {@render item({ name: 'Alex', age: 30 })}
 {/if}
 ```
 
@@ -299,11 +299,11 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 <script>
-	let { header, showHeader = true, children } = $props();
+  let { header, showHeader = true, children } = $props()
 </script>
 
 {#if showHeader && header}
-	{@render header()}
+  {@render header()}
 {/if}
 
 {@render children()}
@@ -313,23 +313,23 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 <script>
-	let { sidebar, main } = $props();
+  let { sidebar, main } = $props()
 </script>
 
 <div class="layout">
-	<aside>{@render sidebar()}</aside>
-	<main>{@render main()}</main>
+  <aside>{@render sidebar()}</aside>
+  <main>{@render main()}</main>
 </div>
 
 <!-- Usage -->
 <Layout>
-	{#snippet sidebar()}
-		<nav>Navigation</nav>
-	{/snippet}
+  {#snippet sidebar()}
+    <nav>Navigation</nav>
+  {/snippet}
 
-	{#snippet main()}
-		<p>Main content</p>
-	{/snippet}
+  {#snippet main()}
+    <p>Main content</p>
+  {/snippet}
 </Layout>
 ```
 
@@ -337,19 +337,19 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 {#snippet userCard(user)}
-	<div class="card">
-		<h3>{user.name}</h3>
-		{#if user.email}
-			<p>{user.email}</p>
-		{/if}
-		{#if user.premium}
-			<span class="badge">Premium</span>
-		{/if}
-	</div>
+  <div class="card">
+    <h3>{user.name}</h3>
+    {#if user.email}
+      <p>{user.email}</p>
+    {/if}
+    {#if user.premium}
+      <span class="badge">Premium</span>
+    {/if}
+  </div>
 {/snippet}
 
 {#each users as user}
-	{@render userCard(user)}
+  {@render userCard(user)}
 {/each}
 ```
 
@@ -361,7 +361,7 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 <div class="wrapper">
-	<slot />
+  <slot />
 </div>
 ```
 
@@ -369,11 +369,11 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 <script>
-	let { children } = $props();
+  let { children } = $props()
 </script>
 
 <div class="wrapper">
-	{@render children()}
+  {@render children()}
 </div>
 ```
 
@@ -390,7 +390,7 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 <script>
-	let { title, content } = $props();
+  let { title, content } = $props()
 </script>
 
 {@render title()}
@@ -403,7 +403,7 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 {#each items as item}
-	<slot {item} />
+  <slot {item} />
 {/each}
 ```
 
@@ -411,11 +411,11 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 <script>
-	let { children } = $props();
+  let { children } = $props()
 </script>
 
 {#each items as item}
-	{@render children(item)}
+  {@render children(item)}
 {/each}
 ```
 
@@ -425,9 +425,9 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 {#if $$slots.header}
-	<slot name="header" />
+  <slot name="header" />
 {:else}
-	<h1>Default</h1>
+  <h1>Default</h1>
 {/if}
 ```
 
@@ -435,13 +435,13 @@ Snippets can be defined and reused within a component:
 
 ```svelte
 <script>
-	let { header } = $props();
+  let { header } = $props()
 </script>
 
 {#if header}
-	{@render header()}
+  {@render header()}
 {:else}
-	<h1>Default</h1>
+  <h1>Default</h1>
 {/if}
 ```
 
@@ -452,17 +452,17 @@ Snippets can be defined and reused within a component:
 ```svelte
 <!-- RIGHT -->
 <script>
-	let { children } = $props();
+  let { children } = $props()
 </script>
 
 <!-- WRONG -->
 <div>
-	{@render children()}
-	<!-- ERROR: children not defined -->
+  {@render children()}
+  <!-- ERROR: children not defined -->
 </div>
 
 <div>
-	{@render children()}
+  {@render children()}
 </div>
 ```
 
@@ -485,7 +485,7 @@ Snippets can be defined and reused within a component:
 ```svelte
 <!-- WRONG -->
 <script>
-	let { children } = $props();
+  let { children } = $props()
 </script>
 
 <slot />
@@ -500,7 +500,7 @@ Snippets can be defined and reused within a component:
 ```svelte
 <!-- RISKY -->
 <script>
-	let { header } = $props();
+  let { header } = $props()
 </script>
 
 {@render header()}
@@ -508,7 +508,7 @@ Snippets can be defined and reused within a component:
 
 <!-- SAFE -->
 {#if header}
-	{@render header()}
+  {@render header()}
 {/if}
 
 <!-- OR -->

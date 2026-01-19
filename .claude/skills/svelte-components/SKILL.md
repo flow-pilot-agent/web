@@ -17,10 +17,10 @@ description: Svelte component patterns. Use for web components, component librar
 ```svelte
 <form id="my-form" action="/submit"><!-- outside table --></form>
 <table>
-	<tr>
-		<td><input form="my-form" name="email" /></td>
-		<td><button form="my-form">Submit</button></td>
-	</tr>
+  <tr>
+    <td><input form="my-form" name="email" /></td>
+    <td><button form="my-form">Submit</button></td>
+  </tr>
 </table>
 ```
 
@@ -29,10 +29,10 @@ description: Svelte component patterns. Use for web components, component librar
 ```javascript
 // svelte.config.js
 export default {
-	compilerOptions: {
-		customElement: true,
-	},
-};
+  compilerOptions: {
+    customElement: true,
+  },
+}
 ```
 
 ```svelte

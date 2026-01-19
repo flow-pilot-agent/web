@@ -24,13 +24,13 @@
 
 ```svelte
 <script>
-	let count = 0;
-	$: doubled = count * 2; // Computed
-	$: {
-		// Effect
-		console.log(count);
-		document.title = `Count: ${count}`;
-	}
+  let count = 0
+  $: doubled = count * 2 // Computed
+  $: {
+    // Effect
+    console.log(count)
+    document.title = `Count: ${count}`
+  }
 </script>
 ```
 
@@ -38,14 +38,14 @@
 
 ```svelte
 <script>
-	let count = $state(0);
-	let doubled = $derived(count * 2); // Computed
+  let count = $state(0)
+  let doubled = $derived(count * 2) // Computed
 
-	$effect(() => {
-		// Effect
-		console.log(count);
-		document.title = `Count: ${count}`;
-	});
+  $effect(() => {
+    // Effect
+    console.log(count)
+    document.title = `Count: ${count}`
+  })
 </script>
 ```
 
@@ -58,8 +58,8 @@ avoid ambiguity.
 
 ```svelte
 <script>
-	export let name;
-	export let age = 18;
+  export let name
+  export let age = 18
 </script>
 ```
 
@@ -67,7 +67,7 @@ avoid ambiguity.
 
 ```svelte
 <script>
-	let { name, age = 18 } = $props();
+  let { name, age = 18 } = $props()
 </script>
 ```
 
@@ -75,7 +75,7 @@ avoid ambiguity.
 
 ```svelte
 <script>
-	let { name, age, ...rest } = $props();
+  let { name, age, ...rest } = $props()
 </script>
 
 <div {...rest}>{name}</div>
@@ -88,7 +88,7 @@ avoid ambiguity.
 ```svelte
 <!-- Child.svelte -->
 <script>
-	export let value;
+  export let value
 </script>
 
 <input bind:value />
@@ -101,7 +101,7 @@ avoid ambiguity.
 ```svelte
 <!-- Child.svelte -->
 <script>
-	let { value = $bindable() } = $props();
+  let { value = $bindable() } = $props()
 </script>
 
 <input bind:value />
@@ -127,10 +127,10 @@ two-way binding.
 ```svelte
 <button onclick={handleClick}>Click</button>
 <button
-	onclick={(e) => {
-		e.preventDefault();
-		handleClick(e);
-	}}>Click</button
+  onclick={e => {
+    e.preventDefault()
+    handleClick(e)
+  }}>Click</button
 >
 <button onclick={() => count++}>Increment</button>
 ```
@@ -144,14 +144,14 @@ two-way binding.
 ```svelte
 <!-- Layout.svelte -->
 <div class="layout">
-	<header><slot name="header" /></header>
-	<main><slot /></main>
+  <header><slot name="header" /></header>
+  <main><slot /></main>
 </div>
 
 <!-- Usage -->
 <Layout>
-	<div slot="header">Header content</div>
-	Main content
+  <div slot="header">Header content</div>
+  Main content
 </Layout>
 ```
 
@@ -160,20 +160,20 @@ two-way binding.
 ```svelte
 <!-- Layout.svelte -->
 <script>
-	let { header, children } = $props();
+  let { header, children } = $props()
 </script>
 
 <div class="layout">
-	<header>{@render header()}</header>
-	<main>{@render children()}</main>
+  <header>{@render header()}</header>
+  <main>{@render children()}</main>
 </div>
 
 <!-- Usage -->
 <Layout>
-	{#snippet header()}
-		Header content
-	{/snippet}
-	Main content
+  {#snippet header()}
+    Header content
+  {/snippet}
+  Main content
 </Layout>
 ```
 
@@ -185,16 +185,16 @@ two-way binding.
 
 ```svelte
 <script>
-	import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from 'svelte'
 
-	onMount(() => {
-		console.log('mounted');
-		return () => console.log('cleanup');
-	});
+  onMount(() => {
+    console.log('mounted')
+    return () => console.log('cleanup')
+  })
 
-	onDestroy(() => {
-		console.log('destroyed');
-	});
+  onDestroy(() => {
+    console.log('destroyed')
+  })
 </script>
 ```
 
@@ -227,8 +227,8 @@ cases.
 ```svelte
 <!-- WRONG - DON'T MIX -->
 <script>
-	let count = $state(0);
-	$: doubled = count * 2; // Mixing runes with reactive statements!
+  let count = $state(0)
+  $: doubled = count * 2 // Mixing runes with reactive statements!
 </script>
 ```
 
@@ -236,8 +236,8 @@ cases.
 
 ```svelte
 <script>
-	let count = $state(0);
-	let doubled = $derived(count * 2);
+  let count = $state(0)
+  let doubled = $derived(count * 2)
 </script>
 ```
 
@@ -246,7 +246,7 @@ cases.
 ```svelte
 <!-- WRONG -->
 <script>
-	let count = 0; // Not reactive in Svelte 5!
+  let count = 0 // Not reactive in Svelte 5!
 </script>
 
 <button onclick={() => count++}>{count}</button>
@@ -257,7 +257,7 @@ cases.
 
 ```svelte
 <script>
-	let count = $state(0);
+  let count = $state(0)
 </script>
 
 <button onclick={() => count++}>{count}</button>
@@ -278,7 +278,7 @@ cases.
 ```svelte
 <!-- WRONG -->
 <script>
-	let { children } = $props();
+  let { children } = $props()
 </script>
 
 <div>{children}</div>
@@ -312,9 +312,9 @@ Svelte stores (`writable`, `readable`, `derived`) still work in Svelte
 
 ```svelte
 <script>
-	import { writable } from 'svelte/store';
+  import { writable } from 'svelte/store'
 
-	const count = writable(0);
+  const count = writable(0)
 </script>
 
 <button onclick={() => $count++}>{$count}</button>
@@ -331,7 +331,7 @@ Svelte stores (`writable`, `readable`, `derived`) still work in Svelte
 
 ```svelte
 <script lang="ts">
-	export let count: number;
+  export let count: number
 </script>
 ```
 
@@ -339,11 +339,11 @@ Svelte stores (`writable`, `readable`, `derived`) still work in Svelte
 
 ```svelte
 <script lang="ts">
-	interface Props {
-		count: number;
-	}
+  interface Props {
+    count: number
+  }
 
-	let { count }: Props = $props();
+  let { count }: Props = $props()
 </script>
 ```
 
@@ -353,20 +353,20 @@ Svelte stores (`writable`, `readable`, `derived`) still work in Svelte
 
 ```svelte
 <script>
-	class Counter {
-		count = $state(0);
-		doubled = $derived(this.count * 2);
+  class Counter {
+    count = $state(0)
+    doubled = $derived(this.count * 2)
 
-		increment() {
-			this.count++;
-		}
-	}
+    increment() {
+      this.count++
+    }
+  }
 
-	const counter = new Counter();
+  const counter = new Counter()
 </script>
 
 <button onclick={() => counter.increment()}>
-	{counter.count} (doubled: {counter.doubled})
+  {counter.count} (doubled: {counter.doubled})
 </button>
 ```
 
@@ -386,11 +386,11 @@ If you need to support both Svelte 4 and 5:
 
 ```svelte
 <script>
-	import { VERSION } from 'svelte/compiler';
+  import { VERSION } from 'svelte/compiler'
 
-	const isSvelte5 = VERSION.startsWith('5');
+  const isSvelte5 = VERSION.startsWith('5')
 
-	// Conditionally use syntax based on version
+  // Conditionally use syntax based on version
 </script>
 ```
 
