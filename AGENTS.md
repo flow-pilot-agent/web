@@ -117,7 +117,7 @@ pnpm check:watch      # Watch mode for type checking
 - Use explicit types for function parameters and return values
 - Prefer `interface` for object shapes
 - Use `type` for unions, intersections, primitives
-- No `any` unless absolutely necessary (use `unknown` instead)
+- **NEVER use `any` type** - it is strictly forbidden (use `unknown` instead)
 
 ### Svelte 5 Runes
 
