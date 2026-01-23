@@ -12,6 +12,7 @@
     autocomplete?: string
     fullWidth?: boolean
     oninput?: (event: Event & { currentTarget: HTMLInputElement }) => void
+    onblur?: () => void
   }
 
   let {
@@ -24,9 +25,9 @@
     id,
     name,
     required = false,
-    autocomplete,
     fullWidth = true,
     oninput,
+    onblur,
   }: Props = $props()
 
   const inputId = $derived(id || name || `input-${Math.random().toString(36).substr(2, 9)}`)
@@ -64,7 +65,7 @@
     {placeholder}
     {disabled}
     {required}
-    autocomplete={autocomplete || ''}
+    {onblur}
     bind:value
     {oninput}
     class={inputClasses}
