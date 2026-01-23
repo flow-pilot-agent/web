@@ -63,6 +63,14 @@ Example from Counter.svelte:
 - **Target**: ES2022, ESNext modules
 - **Type Checking**: Enabled for both .ts and .js files (checkJs: true)
 
+### Code Style
+
+**TypeScript Rules**:
+
+- Use explicit types for function parameters and return values
+- Prefer `interface` for object shapes, `type` for unions/intersections
+- **NEVER use `any` type** - it is strictly forbidden (use `unknown` instead)
+
 ### Important Notes
 
 1. **No SvelteKit**: This is a Vite app, not SvelteKit - no file-based routing or server-side features

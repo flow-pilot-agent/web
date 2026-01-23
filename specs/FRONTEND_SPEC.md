@@ -62,11 +62,11 @@
 
 ### 2.2 UI 组件库
 
-| 库            | 用途                          |
-| ------------- | ----------------------------- |
-| Bits UI       | Headless UI 组件 (Accessible) |
-| Tailwind CSS  | 样式工具                      |
-| Lucide Svelte | 图标库                        |
+| 库               | 用途                          |
+| ---------------- | ----------------------------- |
+| Bits UI          | Headless UI 组件 (Accessible) |
+| Tailwind CSS     | 样式工具                      |
+| @iconify/svelte  | 图标库 (更灵活)               |
 
 ### 2.3 工具库
 
@@ -104,9 +104,12 @@
 **交付物**:
 
 - `package.json` (所有依赖已安装)
-- 配置文件 (vitest.config.ts, .eslintrc.cjs, tailwind.config.js)
+- 配置文件 (vitest.config.ts, eslint.config.js, tailwind.config.ts)
 - 基础组件库 (src/lib/components/ui/)
+  - Button, Input, Card: 自定义实现（简单组件，添加样式）
+  - Modal: 使用 Bits UI Dialog 组件（复杂交互逻辑）
 - Mock API Client (src/lib/api/mock.ts)
+- 图标库: @iconify/svelte (替代 lucide-svelte)
 
 ---
 

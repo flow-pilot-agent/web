@@ -57,7 +57,7 @@ pnpm check:watch      # Watch mode for type checking
 ### Mandatory Flow: Plan → Code → Test → Review
 
 1. **Plan Phase**
-   - Read specification from `/document/` directory
+   - Read specification from `./specs/` directory
    - Break down spec into steps/phases
    - Create feature branch: `feat/<phase>-<feature-name>`
 
@@ -117,7 +117,7 @@ pnpm check:watch      # Watch mode for type checking
 - Use explicit types for function parameters and return values
 - Prefer `interface` for object shapes
 - Use `type` for unions, intersections, primitives
-- No `any` unless absolutely necessary (use `unknown` instead)
+- **NEVER use `any` type** - it is strictly forbidden (use `unknown` instead)
 
 ### Svelte 5 Runes
 
@@ -320,7 +320,7 @@ Brief description of what this PR does.
 
 Which phase/step from the specification does this implement?
 
-- Reference: `/document/srs-user-story.md` Section X.Y
+- Reference: `../document/srs-user-story.md` Section X.Y
 
 ## ✅ Checklist
 
@@ -385,7 +385,7 @@ PUBLIC_API_BASE_URL=http://localhost:8080/api/v1
 
 ## Documentation References
 
-**Project Specs**: `/document/`
+**Project Specs**: `../document/`
 
 - `srs-user-story.md` - Requirements and user stories
 - `system-design.md` - Architecture and design
@@ -434,7 +434,7 @@ if (isTaskData(result)) { ... }
 ## Getting Help
 
 1. **Check Documentation First**:
-   - Project specs in `/document/`
+   - Project specs in `./specs/`
    - Skills in `.claude/skills/`
    - This file (AGENTS.md)
 
