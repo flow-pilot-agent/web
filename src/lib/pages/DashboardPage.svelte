@@ -4,6 +4,13 @@
   import { navigate } from '../router'
 
   /**
+   * Handle navigate to tasks
+   */
+  function navigateToTasks(): void {
+    navigate('/tasks')
+  }
+
+  /**
    * Handle logout
    */
   async function handleLogout(): Promise<void> {
@@ -55,6 +62,14 @@
           </div>
           <h3 class="feature-title">任务管理</h3>
           <p class="feature-description">管理您的任务和待办事项</p>
+          <button
+            class="feature-link"
+            onclick={navigateToTasks}
+            aria-label="前往任务管理"
+          >
+            前往
+            <Icon icon="lucide:arrow-right" class="feature-link-icon" />
+          </button>
         </div>
 
         <div class="feature-card">
@@ -262,6 +277,36 @@
   .feature-description {
     color: #6b7280;
     font-size: 0.875rem;
+  }
+
+  .feature-link {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #f3f4f6;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .feature-link:hover {
+    background-color: #2563eb;
+  }
+
+  .feature-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+
+  .feature-link-icon {
+    width: 1rem;
+    height: 1rem;
   }
 
   @media (max-width: 640px) {

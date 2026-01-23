@@ -5,6 +5,7 @@
   import LoginPage from './lib/pages/LoginPage.svelte'
   import RegisterPage from './lib/pages/RegisterPage.svelte'
   import DashboardPage from './lib/pages/DashboardPage.svelte'
+  import TasksPage from './lib/pages/TasksPage.svelte'
 
   // Local reactive state for the route
   let currentRoute: Route = $state('/')
@@ -58,6 +59,8 @@
     <RegisterPage />
   {:else if currentRoute === '/dashboard'}
     <DashboardPage />
+  {:else if currentRoute === '/tasks'}
+    <TasksPage />
   {/if}
 {/if}
 
