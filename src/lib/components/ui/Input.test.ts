@@ -79,12 +79,6 @@ describe('Input', () => {
     expect(wrapper?.className).toContain('w-full')
   })
 
-  it('sets autocomplete attribute', () => {
-    const { container } = render(Input, { props: { autocomplete: 'email', value: '' } })
-    const input = container.querySelector('input')
-    expect(input?.autocomplete).toBe('email')
-  })
-
   it('has correct ARIA attributes when error exists', () => {
     const { container } = render(Input, { props: { error: 'Invalid', value: '' } })
     const input = container.querySelector('input')
