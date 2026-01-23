@@ -51,6 +51,18 @@ export const router = new Router()
  * Initialize router (call this in app initialization)
  */
 export function initRouter(): void {
+  // If there's a path (not just hash) and no hash, redirect to hash-based routing
+  const path = window.location.pathname
+  if (path !== '/' && !window.location.hash) {
+    // Known routes that might be accessed directly via path
+    const knownRoutes = ['/login', '/register', '/dashboard', '/tasks', '/recommendation', '/review', '/settings']
+    if (knownRoutes.includes(path)) {
+      // Use location.href to properly redirect to hash-based URL
+      window.location.href = '/#' + path
+      return
+    }
+  }
+
   window.addEventListener('hashchange', () => router.handleHashChange())
   router.handleHashChange()
 }

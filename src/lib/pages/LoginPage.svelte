@@ -1,7 +1,7 @@
 <script lang="ts">
   import AuthForm from '../components/auth/AuthForm.svelte'
   import Icon from '@iconify/svelte'
-  import { authStore } from '../stores/authStore'
+  import { authStore } from '../stores/authStore.svelte.js'
   import { navigate } from '../router'
   import type { LoginInput } from '../utils/validation'
 

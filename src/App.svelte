@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte'
   import { router, initRouter, requiresAuthRedirect, navigate, type Route } from './lib/router'
-  import { authStore } from './lib/stores/authStore'
+  import { authStore } from './lib/stores/authStore.svelte.js'
   import LoginPage from './lib/pages/LoginPage.svelte'
   import RegisterPage from './lib/pages/RegisterPage.svelte'
   import DashboardPage from './lib/pages/DashboardPage.svelte'
