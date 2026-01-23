@@ -64,7 +64,7 @@
     {placeholder}
     {disabled}
     {required}
-    autocomplete={autocomplete as any}
+    autocomplete={autocomplete || ''}
     bind:value
     {oninput}
     class={inputClasses}
