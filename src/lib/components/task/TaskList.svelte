@@ -112,6 +112,136 @@
   {/if}
 </div>
 
+<!-- Task Details Modal -->
+{#if selectedTask}
+  <div class="task-details-modal-backdrop">
+    <div class="task-details-modal">
+      <button
+        class="task-details-close"
+        onclick={() => selectedTask = null}
+        aria-label="关闭任务详情"
+      >
+        <Icon icon="lucide:x" class="close-icon" />
+      </button>
+
+      {#snippet children(selectedTask)}
+        <div class="task-details-content">
+          <h2 class="task-details-title">{selectedTask.title}</h2>
+          {#if selectedTask.description}
+            <p class="task-details-description">{selectedTask.description}</p>
+          {/if}
+
+          <div class="task-details-meta">
+            <div class="meta-item">
+              <Icon icon="lucide:tag" class="meta-icon" />
+              {#if selectedTask.tags && selectedTask.tags.length > 0}
+                <span class="meta-tags">
+                  {#each selectedTask.tags as tag}
+                    <span class="meta-tag">{tag}</span>
+                  {/each}
+                </span>
+              {:else}
+                <span class="meta-empty">无标签</span>
+              {/if}
+
+            <div class="meta-item">
+              <Icon icon="lucide:clock" class="meta-icon" />
+              <span>预计 {selectedTask.estimateMinutes || '-'} 分钟</span>
+            </div>
+
+            {#if selectedTask.actualMinutes}
+              <div class="meta-item">
+                <Icon icon="lucide:check-circle-2" class="meta-icon" />
+                <span>实际 {selectedTask.actualMinutes} 分钟</span>
+              </div>
+
+            {#if selectedTask.dueDate}
+              <div class="meta-item">
+                <Icon icon="lucide:calendar" class="meta-icon" />
+                <span>{selectedTask.dueDate}</span>
+              </div>
+
+            {#if selectedTask.postponeCount > 0}
+              <div class="meta-item meta-item--warning">
+                <Icon icon="lucide:rotate-ccw" class="meta-icon" />
+                <span>已推迟 {selectedTask.postponeCount} 次</span>
+              </div>
+            {/if}
+          </div>
+
+          <div class="task-details-actions">
+            <Button
+              variant="secondary"
+              size="sm"
+              onclick={() => editingTask = selectedTask; showTaskForm = true}
+            >
+              <Icon icon="lucide:edit" />
+              编辑
+            </Button>
+            <Button
+              variant="danger"
+              size="sm"
+              onclick={() => handleTaskDelete(selectedTask)}
+              aria-label="删除任务"
+            >
+              <Icon icon="lucide:trash-2" />
+            </Button>
+            {#if selectedTask.status === 'pending'}
+              <Button
+                variant="primary"
+                size="sm"
+                onclick={() => handleTaskStart(selectedTask)}
+                aria-label="开始任务"
+              >
+                <Icon icon="lucide:play" />
+              </Button>
+            {:else if selectedTask.status === 'in_progress'}
+              <Button
+                variant="warning"
+                size="sm"
+                onclick={handleTaskPause}
+                aria-label="暂停任务"
+              >
+                <Icon icon="lucide:pause" />
+              </Button>
+            {/if}
+          </div>
+        </div>
+      {/snippet}
+    </div>
+  {/if}
+</div>
+
+<!-- Task Form Modal -->
+{#if showTaskForm}
+  <TaskForm
+    open={showTaskForm}
+    onClose={() => showTaskForm = false}
+    task={editingTask as CreateTaskInput | undefined}
+  />
+{/if}
+
+<!-- Task Timer Modal -->
+{#if showTaskTimer && taskStore.currentTask}
+  <div class="timer-modal-backdrop">
+    <div class="timer-modal">
+      <TaskTimer
+        task={taskStore.currentTask}
+        onPause={handleTaskPause}
+        oncomplete={() => taskStore.completeTask(taskStore.currentTask.id)}
+      />
+      <button
+        class="timer-close"
+        onclick={() => showTaskTimer = false}
+        aria-label="关闭计时器"
+      >
+        <Icon icon="lucide:x" class="close-icon" />
+      </button>
+    </div>
+  {/if}
+</div>
+</div>
+
 <style>
   .task-list {
     display: flex;
@@ -126,6 +256,8 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  </div>
 
   .task-list-title {
     font-size: 1.5rem;
@@ -163,6 +295,7 @@
   }
 
   .task-list-content {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -193,10 +326,7 @@
   .loading-text {
     margin-top: 1rem;
     color: #6b7280;
-  }
-
-  .task-list-error {
-    gap: 1.5rem;
+    font-size: 0.9rem;
   }
 
   .error-icon {
@@ -243,5 +373,168 @@
     to {
       transform: rotate(360deg);
     }
+  }
+
+  /* Task Details Modal */
+  .task-details-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .task-details-modal {
+    position: relative;
+    background-color: white;
+    border-radius: 1rem;
+    max-width: 600px;
+    width: 90%;
+  }
+
+  .task-details-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .task-details-close:hover {
+    background-color: #1d4ed8;
+  }
+
+  .task-details-close:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+
+  .close-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .task-details-content {
+    padding: 1.5rem;
+  }
+
+  .task-details-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+  }
+
+  .task-details-description {
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .task-details-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .meta-item--warning {
+    color: #d97706;
+  }
+
+  .meta-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .meta-tags {
+    display: flex;
+    gap: 0.375rem;
+  }
+
+  .meta-tag {
+    padding: 0.25rem 0.625rem;
+    background-color: #e0f2fe;
+    color: #0369a1;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+  }
+
+  .meta-empty {
+    color: #9ca3af;
+  }
+
+  .task-details-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  /* Task Timer Modal */
+  .timer-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .timer-modal {
+    position: relative;
+    background-color: white;
+    border-radius: 1rem;
+    max-width: 600px;
+    width: 90%;
+  }
+
+  .timer-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .timer-close:hover {
+    background-color: #1d4ed8;
+  }
+
+  .timer-close:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+
+  .close-icon {
+    width: 1.25rem;
+    height: 1.25rem;
   }
 </style>
