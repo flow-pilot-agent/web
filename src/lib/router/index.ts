@@ -24,7 +24,7 @@ export function getCurrentRoute(): Route {
  * Simple router state
  */
 class Router {
-  currentRoute = $state<Route>(getCurrentRoute())
+  currentRoute: Route = getCurrentRoute()
 
   /**
    * Handle hash change

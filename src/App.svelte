@@ -1,10 +1,13 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { router, initRouter, requiresAuthRedirect, navigate } from './lib/router'
+  import { onMount, onDestroy } from 'svelte'
+  import { router, initRouter, requiresAuthRedirect, navigate, type Route } from './lib/router'
   import { authStore } from './lib/stores/authStore'
   import LoginPage from './lib/pages/LoginPage.svelte'
   import RegisterPage from './lib/pages/RegisterPage.svelte'
   import DashboardPage from './lib/pages/DashboardPage.svelte'
+
+  // Local reactive state for the route
+  let currentRoute: Route = $state('/')
 
   /**
    * Initialize app
@@ -12,6 +15,15 @@
   onMount(async () => {
     // Initialize router
     initRouter()
+
+    // Set initial route
+    currentRoute = router.currentRoute
+
+    // Listen for route changes
+    const handleHashChange = () => {
+      currentRoute = router.currentRoute
+    }
+    window.addEventListener('hashchange', handleHashChange)
 
     // Initialize auth store
     await authStore.initialize()
@@ -28,6 +40,10 @@
       }
     }
   })
+
+  onDestroy(() => {
+    window.removeEventListener('hashchange', () => currentRoute = router.currentRoute)
+  })
 </script>
 
 {#if authStore.loading && !authStore.user}
@@ -36,11 +52,11 @@
     <p class="loading-text">加载中...</p>
   </div>
 {:else}
-  {#if router.currentRoute === '/' || router.currentRoute === '/login'}
+  {#if currentRoute === '/' || currentRoute === '/login'}
     <LoginPage />
-  {:else if router.currentRoute === '/register'}
+  {:else if currentRoute === '/register'}
     <RegisterPage />
-  {:else if router.currentRoute === '/dashboard'}
+  {:else if currentRoute === '/dashboard'}
     <DashboardPage />
   {/if}
 {/if}
