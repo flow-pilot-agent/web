@@ -7,10 +7,7 @@
     setFilter: (filter: TaskFilters) => void
   }
 
-  let {
-    filter,
-    setFilter,
-  }: Props = $props()
+  let { filter, setFilter }: Props = $props()
 
   const statusOptions = [
     { value: 'all', label: '全部' },
@@ -27,19 +24,19 @@
   ]
 
   /**
-   * Handle status filter change
+   * Handle status change
    */
   function handleStatusChange(event: Event & { currentTarget: HTMLSelectElement }): void {
-    const value = event.currentTarget.value as TaskStatus | 'all'
-    setFilter({ ...filter, status: value })
+    const status = event.currentTarget.value as TaskStatus | 'all'
+    setFilter({ ...filter, status })
   }
 
   /**
-   * Handle priority filter change
+   * Handle priority change
    */
   function handlePriorityChange(event: Event & { currentTarget: HTMLSelectElement }): void {
-    const value = event.currentTarget.value as TaskPriority | 'all'
-    setFilter({ ...filter, priority: value })
+    const priority = event.currentTarget.value as TaskPriority | 'all'
+    setFilter({ ...filter, priority })
   }
 
   /**
@@ -50,10 +47,14 @@
   }
 
   /**
-   * Clear filters
+   * Clear all filters
    */
   function clearFilters(): void {
-    setFilter({ status: 'all', priority: 'all', searchQuery: '' })
+    setFilter({
+      status: 'all',
+      priority: 'all',
+      searchQuery: '',
+    })
   }
 
   /**
@@ -64,15 +65,15 @@
   )
 </script>
 
-<div class="task-filters">
+<div class="task-filters bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
   <!-- Status Filter -->
   <div class="filter-group">
-    <label class="filter-label">
-      <Icon icon="lucide:filter" class="filter-icon" />
+    <label class="filter-label text-gray-700 dark:text-gray-300">
+      <Icon icon="lucide:filter" class="w-4 h-4" />
       状态
     </label>
     <select
-      class="filter-select"
+      class="filter-select bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
       value={filter.status || 'all'}
       onchange={handleStatusChange}
     >
@@ -84,12 +85,12 @@
 
   <!-- Priority Filter -->
   <div class="filter-group">
-    <label class="filter-label">
-      <Icon icon="lucide:bar-chart-2" class="filter-icon" />
+    <label class="filter-label text-gray-700 dark:text-gray-300">
+      <Icon icon="lucide:bar-chart-2" class="w-4 h-4" />
       优先级
     </label>
     <select
-      class="filter-select"
+      class="filter-select bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
       value={filter.priority || 'all'}
       onchange={handlePriorityChange}
     >
@@ -101,12 +102,12 @@
 
   <!-- Search -->
   <div class="filter-group filter-group--search">
-    <label class="filter-label">
-      <Icon icon="lucide:search" class="filter-icon" />
+    <label class="filter-label text-gray-700 dark:text-gray-300">
+      <Icon icon="lucide:search" class="w-4 h-4" />
     </label>
     <input
       type="text"
-      class="filter-input"
+      class="filter-input bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500"
       placeholder="搜索任务..."
       value={filter.searchQuery}
       oninput={handleSearchInput}
@@ -116,11 +117,11 @@
   <!-- Clear Filters -->
   {#if hasActiveFilters}
     <button
-      class="clear-filters-button"
+      class="clear-filters-button bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
       onclick={clearFilters}
       aria-label="清除筛选"
     >
-      <Icon icon="lucide:x" />
+      <Icon icon="lucide:x" class="w-4 h-4" />
       清除
     </button>
   {/if}
@@ -133,21 +134,7 @@
     gap: 1rem;
     flex-wrap: wrap;
     padding: 1rem;
-    background-color: white;
     border-radius: 0.75rem;
-    border: 1px solid #e5e7eb;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .task-filters {
-      background-color: #1f2937;
-      border-color: #374151;
-    }
-  }
-
-  :global(.dark) .task-filters {
-    background-color: #1f2937;
-    border-color: #374151;
   }
 
   .filter-group {
@@ -167,61 +154,19 @@
     gap: 0.375rem;
     font-size: 0.875rem;
     font-weight: 500;
-    color: #374151;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .filter-label {
-      color: #d1d5db;
-    }
-  }
-
-  :global(.dark) .filter-label {
-    color: #d1d5db;
-  }
-
-  .filter-icon {
-    width: 1rem;
-    height: 1rem;
   }
 
   .filter-select {
-    padding: 0.5rem 2rem;
-    border: 1px solid #d1d5db;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    border: 1px solid;
     border-radius: 0.5rem;
-    background-color: white;
     font-size: 0.875rem;
-    color: #374151;
     cursor: pointer;
     transition: all 0.15s;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .filter-select {
-      background-color: #374151;
-      border-color: #4b5563;
-      color: #d1d5db;
-    }
-  }
-
-  :global(.dark) .filter-select {
-    background-color: #374151;
-    border-color: #4b5563;
-    color: #d1d5db;
-  }
-
   .filter-select:hover {
     border-color: #9ca3af;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .filter-select:hover {
-      border-color: #6b7280;
-    }
-  }
-
-  :global(.dark) .filter-select:hover {
-    border-color: #6b7280;
   }
 
   .filter-select:focus {
@@ -230,62 +175,17 @@
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
   }
 
-  @media (prefers-color-scheme: dark) {
-    .filter-select:focus {
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
-    }
-  }
-
-  :global(.dark) .filter-select:focus {
-    border-color: #60a5fa;
-    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
-  }
-
   .filter-input {
     flex: 1;
     padding: 0.5rem 0.75rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid;
     border-radius: 0.5rem;
     font-size: 0.875rem;
-    color: #374151;
     transition: all 0.15s;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .filter-input {
-      background-color: #374151;
-      border-color: #4b5563;
-      color: #d1d5db;
-    }
-
-    .filter-input::placeholder {
-      color: #9ca3af;
-    }
-  }
-
-  :global(.dark) .filter-input {
-    background-color: #374151;
-    border-color: #4b5563;
-    color: #d1d5db;
-  }
-
-  :global(.dark) .filter-input::placeholder {
-    color: #9ca3af;
   }
 
   .filter-input:hover {
     border-color: #9ca3af;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .filter-input:hover {
-      border-color: #6b7280;
-    }
-  }
-
-  :global(.dark) .filter-input:hover {
-    border-color: #6b7280;
   }
 
   .filter-input:focus {
@@ -294,70 +194,17 @@
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
   }
 
-  @media (prefers-color-scheme: dark) {
-    .filter-input:focus {
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
-    }
-  }
-
-  :global(.dark) .filter-input:focus {
-    border-color: #60a5fa;
-    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
-  }
-
-  .filter-input::placeholder {
-    color: #9ca3af;
-  }
-
   .clear-filters-button {
     display: flex;
     align-items: center;
     gap: 0.375rem;
     padding: 0.5rem 1rem;
-    background-color: #f3f4f6;
-    color: #374151;
     border: none;
     border-radius: 0.5rem;
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.15s;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .clear-filters-button {
-      background-color: #374151;
-      color: #d1d5db;
-    }
-  }
-
-  :global(.dark) .clear-filters-button {
-    background-color: #374151;
-    color: #d1d5db;
-  }
-
-  .clear-filters-button:hover {
-    background-color: #e5e7eb;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .clear-filters-button:hover {
-      background-color: #4b5563;
-    }
-  }
-
-  :global(.dark) .clear-filters-button:hover {
-    background-color: #4b5563;
-  }
-
-  .clear-filters-button:hover {
-    background-color: #2563eb;
-  }
-
-  .clear-filters-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
   }
 
   @media (max-width: 640px) {

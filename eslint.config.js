@@ -51,6 +51,6 @@ export default ts.config(
     },
   },
   {
-    ignores: ['dist/', 'build/', '.svelte-kit/', 'node_modules/', '*.config.js', '*.config.ts'],
+    ignores: ['dist/', 'build/', '.svelte-kit/', 'node_modules/', '*.config.js'],
   }
 )

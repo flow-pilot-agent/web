@@ -40,6 +40,11 @@
   )
 </script>
 
-<div class={cardClasses} {onclick} role={clickable || onclick ? 'button' : undefined} tabindex={clickable || onclick ? 0 : undefined}>
+<button
+  class={cardClasses}
+  {onclick}
+  role={clickable || onclick ? 'button' : undefined}
+  tabindex={clickable || onclick ? 0 : undefined}
+>
   {@render children?.()}
-</div>
+</button>
