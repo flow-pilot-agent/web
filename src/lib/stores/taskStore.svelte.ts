@@ -3,8 +3,12 @@
  * Manages task list, current task, and timer state using Svelte 5 runes
  */
 
-import type { Task, TaskSession, CreateTaskInput, UpdateTaskInput, TaskPriority, TaskStatus } from '../api/types'
+import type { Task, TaskSession, CreateTaskInput, UpdateTaskInput, TaskPriority as TaskPriorityType, TaskStatus as TaskStatusType } from '../api/types'
 import { apiClient } from '../api'
+
+// Re-export types for use in components
+export type TaskPriority = TaskPriorityType
+export type TaskStatus = TaskStatusType
 
 /**
  * Timer state
@@ -35,7 +39,7 @@ class TaskStore {
   error = $state<string | null>(null)
 
   // Derived state - filtered tasks
-  filteredTasks = $derived(() => {
+  get filteredTasks(): Task[] {
     return this.tasks.filter((task) => {
       // Filter by status
       if (this.filter.status && this.filter.status !== 'all' && task.status !== this.filter.status) {
@@ -60,7 +64,7 @@ class TaskStore {
 
       return true
     })
-  })
+  }
 
   // Derived state - task counts
   totalTasksCount = $derived(this.tasks.length)
@@ -77,9 +81,10 @@ class TaskStore {
   // Derived state - current task info
   currentTaskSessionDuration = $derived(() => {
     if (!this.currentTask) return null
+    const task = this.currentTask
     const sessions = this.tasks
-      .filter((t) => t.id === this.currentTask.id)
-      .flatMap((t) => t.sessions || [])
+      .filter((t) => t.id === task.id)
+      .flatMap((t) => (t as Task & { sessions?: TaskSession[] }).sessions || [])
     return sessions.reduce((sum, s) => sum + (s.durationMinutes || 0), 0)
   })
 
@@ -335,22 +340,25 @@ class TaskStore {
       let comparison = 0
 
       switch (by) {
-        case 'dueDate':
+        case 'dueDate': {
           const aDate = a.dueDate ? new Date(a.dueDate).getTime() : Infinity
           const bDate = b.dueDate ? new Date(b.dueDate).getTime() : Infinity
           comparison = aDate - bDate
           break
+        }
 
-        case 'priority':
+        case 'priority': {
           const priorityOrder = { high: 3, medium: 2, low: 1 }
           comparison = (priorityOrder[a.priority as TaskPriority] || 0) - (priorityOrder[b.priority as TaskPriority] || 0)
           break
+        }
 
-        case 'createdAt':
+        case 'createdAt': {
           const aTime = new Date(a.createdAt).getTime()
           const bTime = new Date(b.createdAt).getTime()
           comparison = aTime - bTime
           break
+        }
       }
 
       return order === 'desc' ? -comparison : comparison

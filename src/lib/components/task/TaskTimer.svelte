@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte/runes'
+  import { onMount, onDestroy } from 'svelte'
   import Icon from '@iconify/svelte'
   import Button from '../ui/Button.svelte'
   import type { Task } from '../../api/types'
@@ -31,7 +31,7 @@
   // Calculate progress percentage
   const progressPercent = $derived(() => {
     if (!task.estimateMinutes) return 0
-    const percent = (localSeconds / task.estimateMinutes) * 100
+    const percent = (localSeconds / (task.estimateMinutes * 60)) * 100
     return Math.min(percent, 100)
   })
 
@@ -130,9 +130,9 @@
         stroke="#3b82f6"
         stroke-width="8"
         stroke-dasharray={283}
-        stroke-dashoffset={283 - (283 * progressPercent / 100)}
+        stroke-dashoffset={283 - (283 * (progressPercent() / 100))}
         transform="rotate(-90deg)"
-        style:transition: stroke-dashoffset 1s linear"
+        style:transition="stroke-dashoffset 1s linear"
       />
     </svg>
     <div class="timer-center">

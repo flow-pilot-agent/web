@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from '@iconify/svelte'
-  import { authStore } from '../stores/authStore.svelte.js'
-  import { navigate } from '../router'
+  import { authStore } from '../stores/authStore.svelte'
+  import { navigate } from '../router/index.svelte'
 
   /**
    * Handle navigate to tasks

@@ -109,6 +109,14 @@
   function handleClick(): void {
     onclick?.(task)
   }
+
+  /**
+   * Handle action button clicks - prevent event propagation
+   */
+  function handleActionClick(event: MouseEvent, action: () => void): void {
+    event.stopPropagation()
+    action()
+  }
 </script>
 
 <Card
@@ -144,7 +152,7 @@
     <div class="task-card-footer">
       {#if task.tags && task.tags.length > 0}
         <div class="task-tags">
-          {#each task.tags as tag}
+          {#each task.tags as tag (tag)}
             <span class="task-tag">{tag}</span>
           {/each}
         </div>
@@ -172,7 +180,7 @@
         <Button
           variant="primary"
           size="sm"
-          onclick={() => onstart?.()}
+          onclick={(e) => handleActionClick(e, () => onstart?.())}
           aria-label="开始任务"
         >
           <Icon icon="lucide:play" />
@@ -181,7 +189,7 @@
         <Button
           variant="secondary"
           size="sm"
-          onclick={() => onpause?.()}
+          onclick={(e) => handleActionClick(e, () => onpause?.())}
           aria-label="暂停任务"
         >
           <Icon icon="lucide:pause" />
@@ -192,7 +200,7 @@
         <Button
           variant="success"
           size="sm"
-          onclick={() => oncomplete?.()}
+          onclick={(e) => handleActionClick(e, () => oncomplete?.())}
           aria-label="完成任务"
         >
           <Icon icon="lucide:check" />
@@ -202,7 +210,7 @@
       <Button
         variant="danger"
         size="sm"
-        onclick={() => ondelete?.()}
+        onclick={(e) => handleActionClick(e, () => ondelete?.())}
         aria-label="删除任务"
       >
         <Icon icon="lucide:trash-2" />
@@ -239,6 +247,13 @@
   .task-card:hover:not(.completed) {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .task-card:hover:not(.completed) {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
   }
 
   .task-card-header {
@@ -308,6 +323,12 @@
     color: #6b7280;
   }
 
+  @media (prefers-color-scheme: dark) {
+    .status-label {
+      color: #9ca3af;
+    }
+  }
+
   .task-card-due-date {
     display: flex;
     align-items: center;
@@ -318,9 +339,23 @@
     font-size: 0.75rem;
   }
 
+  @media (prefers-color-scheme: dark) {
+    .task-card-due-date {
+      background-color: #374151;
+      color: #d1d5db;
+    }
+  }
+
   .task-card-due-date.overdue {
     background-color: #fef2f2;
     color: #dc2626;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .task-card-due-date.overdue {
+      background-color: #7f1d1d;
+      color: #fca5a5;
+    }
   }
 
   .due-date-icon {
@@ -342,6 +377,12 @@
     margin: 0;
   }
 
+  @media (prefers-color-scheme: dark) {
+    .task-title {
+      color: #f9fafb;
+    }
+  }
+
   .task-description {
     font-size: 0.875rem;
     color: #6b7280;
@@ -350,6 +391,12 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .task-description {
+      color: #9ca3af;
+    }
   }
 
   .task-card-footer {
@@ -374,6 +421,13 @@
     font-size: 0.75rem;
   }
 
+  @media (prefers-color-scheme: dark) {
+    .task-tag {
+      background-color: #164e63;
+      color: #7dd3fc;
+    }
+  }
+
   .task-estimate,
   .task-actual {
     display: flex;
@@ -381,6 +435,13 @@
     gap: 0.375rem;
     font-size: 0.875rem;
     color: #6b7280;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .task-estimate,
+    .task-actual {
+      color: #9ca3af;
+    }
   }
 
   .estimate-icon,
@@ -393,11 +454,26 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .task-card-actions {
+      border-top-color: #374151;
+    }
   }
 
   .task-card-children {
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #e5e7eb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .task-card-children {
+      border-top-color: #374151;
+    }
   }
 </style>

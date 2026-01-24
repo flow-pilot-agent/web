@@ -3,8 +3,9 @@
   import Button from '../ui/Button.svelte'
   import Modal from '../ui/Modal.svelte'
   import Icon from '@iconify/svelte'
-  import { taskSchema, type CreateTaskInput, type UpdateTaskInput, type TaskPriority } from '../../utils/validation'
-  import type { Snippet } from 'svelte'
+  import { taskSchema } from '../../utils/validation'
+  import type { CreateTaskInput, UpdateTaskInput } from '../../api/types'
+  import { taskStore, type TaskPriority } from '../../stores/taskStore.svelte'
 
   interface Props {
     open?: boolean
@@ -111,9 +112,9 @@
   $effect(() => {
     if (task) {
       const taskData = task as UpdateTaskInput & { id: string }
-      title = taskData.title
+      title = taskData.title || ''
       description = taskData.description || ''
-      priority = taskData.priority
+      priority = taskData.priority || 'medium'
       estimateMinutes = taskData.estimateMinutes
       dueDate = taskData.dueDate || ''
       tags = taskData.tags?.join(', ') || ''
@@ -146,9 +147,9 @@
   /**
    * Get displayed tags
    */
-  const displayedTags = $derived(() => {
-    return tags.split(',').map(t => t.trim()).filter(Boolean)
-  })
+  const displayedTags = $derived(
+    tags.split(',').map(t => t.trim()).filter(Boolean)
+  )
 </script>
 
 <Modal
@@ -243,7 +244,7 @@
     <div class="form-group">
       <label class="form-label">标签</label>
       <div class="tags-container">
-        {#each displayedTags as tag}
+        {#each displayedTags as tag (tag)}
           <button
             type="button"
             class="tag-chip"
