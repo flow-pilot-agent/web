@@ -7,6 +7,7 @@
     clickable?: boolean
     onclick?: (event: MouseEvent) => void
     children?: import('svelte').Snippet
+    class?: string
   }
 
   const {
@@ -15,6 +16,7 @@
     clickable = false,
     onclick,
     children,
+    class: className,
   }: Props = $props()
 
   const paddingClasses: Record<CardPadding, string> = {
@@ -27,15 +29,22 @@
   const cardClasses = $derived(
     [
       'bg-white rounded-lg shadow border border-gray-200',
+      'dark:bg-gray-800 dark:border-gray-700',
       paddingClasses[padding],
       hoverable && 'hover:shadow-md transition-shadow duration-200',
       clickable && 'cursor-pointer',
+      className,
     ]
       .filter(Boolean)
       .join(' ')
   )
 </script>
 
-<div class={cardClasses} {onclick}>
+<button
+  class={cardClasses}
+  {onclick}
+  role={clickable || onclick ? 'button' : undefined}
+  tabindex={clickable || onclick ? 0 : undefined}
+>
   {@render children?.()}
-</div>
+</button>

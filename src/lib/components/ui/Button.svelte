@@ -11,6 +11,7 @@
     type?: 'button' | 'submit' | 'reset'
     onclick?: (event: MouseEvent) => void
     children?: import('svelte').Snippet
+    'aria-label'?: string
   }
 
   const {
@@ -22,14 +23,15 @@
     type = 'button',
     onclick,
     children,
+    ...restProps
   }: Props = $props()
 
   const variantClasses: Record<ButtonVariant, string> = {
-    primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
-    secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-400',
-    success: 'bg-success text-white hover:bg-success-dark focus:ring-success',
-    danger: 'bg-danger text-white hover:bg-danger-dark focus:ring-danger',
-    ghost: 'bg-transparent text-primary-600 hover:bg-primary-50 focus:ring-primary-500',
+    primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 dark:bg-primary-700 dark:hover:bg-primary-600',
+    secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-400 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600',
+    success: 'bg-success text-white hover:bg-success-dark focus:ring-success dark:bg-success-dark dark:hover:bg-success',
+    danger: 'bg-danger text-white hover:bg-danger-dark focus:ring-danger dark:bg-danger-dark dark:hover:bg-danger',
+    ghost: 'bg-transparent text-primary-600 hover:bg-primary-50 focus:ring-primary-500 dark:text-primary-400 dark:hover:bg-gray-800',
   }
 
   const sizeClasses: Record<ButtonSize, string> = {
@@ -60,7 +62,13 @@
   }
 </script>
 
-<button {type} class={buttonClasses} disabled={disabled || loading} onclick={handleClick}>
+<button
+  {type}
+  class={buttonClasses}
+  disabled={disabled || loading}
+  onclick={handleClick}
+  {...restProps}
+>
   {#if loading}
     加载中...
   {:else}

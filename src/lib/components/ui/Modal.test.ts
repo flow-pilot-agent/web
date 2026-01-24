@@ -58,7 +58,7 @@ describe('Modal', () => {
       props: {
         open: true,
         title: 'Test',
-        onclose: handleClose,
+        onClose: handleClose,
       },
     })
 
@@ -75,7 +75,7 @@ describe('Modal', () => {
       props: {
         open: true,
         title: 'Test',
-        onclose: handleClose,
+        onClose: handleClose,
       },
     })
 
@@ -92,7 +92,7 @@ describe('Modal', () => {
       props: {
         open: true,
         title: 'Test',
-        onclose: handleClose,
+        onClose: handleClose,
       },
     })
 
@@ -109,7 +109,7 @@ describe('Modal', () => {
       props: {
         open: true,
         title: 'Test',
-        onclose: handleClose,
+        onClose: handleClose,
       },
     })
 
@@ -123,7 +123,7 @@ describe('Modal', () => {
       props: {
         open: true,
         title: 'Test',
-        onclose: handleClose,
+        onClose: handleClose,
       },
     })
 
